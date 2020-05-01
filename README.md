@@ -1,4 +1,4 @@
-# estuary-web - Where your data streems pushed to web browser
+# ESTUARY-WEB - Data streems pushed to web browser
 
 ## Table of Contents 
 * [Description] (#description)
