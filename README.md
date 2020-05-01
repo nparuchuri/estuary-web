@@ -1,4 +1,4 @@
-# estuary-web - Java WebSocket end point with Apache Ignite
+# estuary-web - Where your data streems pushed to web browser
 
 ## Table of Contents 
 * [Description] (#description)
@@ -8,7 +8,7 @@
 
 ## Description
 
-This project provides WebSocket Server implemention based on JEE spec. webpush.war is a single deployable file into tomcat. Apache Ignite 2.8 is used for message distribuiton across muliple instances of tomcat servers.  
+This project provides WebSocket Server end point based on JEE spec. estuary-web.war is a single deployable file into tomcat. Apache Ignite 2.8 is used for message distribuiton across muliple instances of tomcat servers.  
 
 Technologies 
 
