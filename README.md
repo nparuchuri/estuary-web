@@ -18,6 +18,5 @@ Technologies
 
 ## Message Formats
 
-@[Alt text](/webpush/src/docs/messgeformats.txt)
+@[Alt text](src/doc/messgeformats.txt "Message Formats")
 
-<div w3-include-html="/webpush/src/docs/messgeformats.txt"></div>
