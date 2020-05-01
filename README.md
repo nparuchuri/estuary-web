@@ -12,7 +12,7 @@ This project provides WebSocket Server end point based on JEE spec. estuary-web.
 
 Technologies 
 
-## Component Design
+## Architecture and Component Design
 
 ![Alt text](src/doc/design.png "Web Push Design")
 
