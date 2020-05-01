@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+
+<body>
+	<form action="">
+		<br> <br>
+		<table>
+			<tr>
+				<td>Target Channel :</td>
+				<td><input id="target" type="text" value="" />
+					<input onClick="subscribe()" value="Subscribe" type="button" /></td>
+			<tr>
+				<td>Data :</td>
+				<td><input id="data" type="text"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input onClick="wsSendMessage()" value="Send" type="button" />
+					<input onClick="wsCloseConnection()" value="Disconnect"
+					type="button" /></td>
+			</tr>
+			<tr>
+				<td>Conversation :</td>
+				<td><textarea id="echoText" rows="20" cols="128"></textarea></td>
+			</tr>
+		</table>
+	</form>
+
+	<script type="text/javascript">
+		var webSocket = new WebSocket("ws://" + window.location.hostname + ":"
+				+ window.location.port
+				+ "/estuary-web/webpuhserver?id1=123&id2=abc");
+		var echoText = document.getElementById("echoText");
+		var data = document.getElementById("data");
+		var target = document.getElementById("target");
+
+		//OnOpen
+		webSocket.onopen = function(message) {
+			echoText.value += "Connected.. " + JSON.stringify(message);
+		}
+		
+		
+		// function to subscribe
+		
+		function subscribe() {
+			var regObj = buildJson("REG", target.value, "");
+			webSocket.send(JSON.stringify(regObj));
+		}
+		
+
+		// OnMessagewe 
+		webSocket.onmessage = function(message) {
+			wsOnMessage(message.data);
+		}
+		
+		function wsOnMessage(message) {
+			append("Received : " + message);
+		}
+
+		//Send message
+		function wsSendMessage() {
+
+			var palObj = buildJson("PAL", target.value, data.value);
+			webSocket.send(JSON.stringify(palObj));
+			append("Sent : " + data.value);
+			data.value = "";
+		}
+
+		//OnClose
+		webSocket.onclose = function(message) {
+			append("Disconnected.. ");
+		}
+		
+		function wsCloseConnection() {
+			
+			webSocket.close(1000, "On disconnect click");
+		}
+
+		//OnError
+		webSocket.onerror = function(message) {
+			alert(message);
+			append("Error .." + message);
+		}
+
+		function append(message) {
+			echoText.value += "\n" + message;
+		}
+
+		function buildJson(type, target, data) {
+			var msgJson = {};
+			msgJson.type = type;
+			msgJson.target = target;
+			msgJson.data = data;
+			return msgJson;
+		}
+	</script>
+
+</body>
+</html>
