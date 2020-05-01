@@ -14,7 +14,7 @@ Technologies
 
 ## Component Design
 
-![Alt text](/webpush/src/docs/design.png "Web Push Design")
+![Alt text](/src/docs/design.png "Web Push Design")
 
 ## Message Formats
 
