@@ -17,7 +17,7 @@ public class IgniteDataGridServiceInitializer implements ServletContextListener 
 	
 	private static Logger logger = LogManager.getLogger(IgniteDataGridServiceInitializer.class);
 	
-	private IgniteDataGridService ids;
+	private IgniteDataGridService idgs;
 	
 	public IgniteDataGridServiceInitializer() {
 		
@@ -25,12 +25,10 @@ public class IgniteDataGridServiceInitializer implements ServletContextListener 
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		
 		logger.info("Starting Ignite Node after " + sce.getServletContext().getContextPath() + " initialized");
-
-		if ( ids == null ) {
-			ids = IgniteDataGridService.get();
-			ids.init();
+		if ( idgs == null ) {
+			idgs = IgniteDataGridService.get();
+			idgs.init();
 		}
 		
 	}
@@ -38,9 +36,7 @@ public class IgniteDataGridServiceInitializer implements ServletContextListener 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		logger.info("Stopping Ignite Node after " + sce.getServletContext().getContextPath() + " destroyed");
-		ids.destory();
+		idgs.destory();
 	}
-	
-	
 
 }

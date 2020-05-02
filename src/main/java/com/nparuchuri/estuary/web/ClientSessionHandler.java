@@ -36,9 +36,11 @@ public class ClientSessionHandler {
 	 * 
 	 * @param session
 	 */
-	public static void createwebClient(Session session) {
+	public static void createWebClient(Session session) {
 		WebClient webClient = new WebClient(session);
 		WebClientMap.get().addClient(webClient);
+		logger.debug("final Web Client Map {} ", WebClientMap.get().getWebclients());
+		logger.debug("final Target Session Map {} " , TargetSessionMap.get().targetSessionMap());
 	}
 	
 	/**
@@ -47,10 +49,13 @@ public class ClientSessionHandler {
 	 */
 	public static void removeSession(WebClient webClient) {
 		logger.info("WebClient " + webClient);
-		boolean removed = TargetSessionMap.get().remove(webClient.getTarget(), webClient.getSession().getId());
+		TargetSessionMap.get().remove(webClient.getTarget(), webClient.getSession().getId());
 		webClient = WebClientMap.get().removeClient(webClient.getSession().getId());
 		logger.info("Removed from WebClientMap " + webClient);
-		logger.info("Removed from TargetSessionMap " + removed);
+		logger.info("Removed from TargetSessionMap ");
+		logger.debug("final Web Client Map {} ", WebClientMap.get().getWebclients());
+		logger.debug("final Target Session Map {} " , TargetSessionMap.get().targetSessionMap());
+		
 	}
 	
 	

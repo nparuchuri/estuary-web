@@ -63,7 +63,7 @@ public class IgniteDataGridService implements DataGridService {
 
 		TcpDiscoverySpi spi = new TcpDiscoverySpi();
 		TcpDiscoveryMulticastIpFinder ipFinder = new TcpDiscoveryMulticastIpFinder();
-		ipFinder.setMulticastGroup("228.10.10.157");
+		ipFinder.setMulticastGroup("239.255.255.255");
 		spi.setIpFinder(ipFinder);
 
 		CacheConfiguration<String, String> ccfg = new CacheConfiguration<String, String>("MESSAGES");
@@ -89,7 +89,6 @@ public class IgniteDataGridService implements DataGridService {
 		icfg.setGridLogger(log);
 
 		System.setProperty("IGNITE_QUIET", "false");
-
 		System.setProperty("java.net.preferIPv4Stack", "true");
 
 		// Start Ignite node.

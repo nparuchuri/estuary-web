@@ -7,10 +7,12 @@
 		</Console>
 	</Appenders>
 	<Loggers>
-<!-- 		<logger level="WARN"
-			name="org.apache.ignite.internal.IgniteKernal">
+		<Logger name="org.apache.ignite.internal.IgniteKernal" level="warn" additivity="false">
 			<AppenderRef ref="Console" />
-		</logger> -->
+		</Logger>
+		<Logger name="com.nparuchuri.estuary" level="debug" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
 		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>

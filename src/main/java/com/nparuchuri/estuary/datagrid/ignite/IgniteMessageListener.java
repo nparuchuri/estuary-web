@@ -34,7 +34,7 @@ public class IgniteMessageListener extends DataGridListener implements IgniteBiP
 	public boolean apply(UUID nodeId, String message) {
 		logger.info("WebMessage received on " + this.nodeId + " event apply node id : " + nodeId +  " DataGridMessage : " + message);
 		DataGridMessage dgMessage = this.gson.fromJson(message, DataGridMessage.class);
-		onMessage(dgMessage.getWebPushmessage());
+		onMessage(dgMessage.getWebMsg());
 		return true;
 	}
 

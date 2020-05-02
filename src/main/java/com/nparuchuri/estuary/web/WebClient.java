@@ -10,13 +10,13 @@ import javax.websocket.Session;
  *
  */
 public class WebClient {
-	
+
 	private String target;
-	
+
 	private String clientUniqueId;
-	
+
 	private Session session;
-	
+
 	/**
 	 * 
 	 * @param target
@@ -25,9 +25,9 @@ public class WebClient {
 	public WebClient(Session session) {
 		super();
 		this.session = session;
-		this.target =  session.getPathParameters().get("target");
+		this.target = session.getPathParameters().get("target");
 		this.clientUniqueId = session.getPathParameters().get("clientUniqueId");
-		if ( this.clientUniqueId == null ) {
+		if (this.clientUniqueId == null || this.clientUniqueId.equals("")) {
 			URI requestURI = session.getRequestURI();
 			String hostName = requestURI.getHost();
 			String port = Integer.toString(requestURI.getPort());
@@ -43,7 +43,7 @@ public class WebClient {
 	public void setTarget(String target) {
 		this.target = target;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -66,6 +66,9 @@ public class WebClient {
 
 	@Override
 	public String toString() {
-		return "WebClient [target=" + target + ", clientUniqueId=" + clientUniqueId + ", session=" + session + "]";
+		String id = "null";
+		if (this.session != null)
+			id = this.session.getId();
+		return "WebClient [target=" + target + ", clientUniqueId=" + clientUniqueId + ", session id =" + id + "]";
 	}
 }

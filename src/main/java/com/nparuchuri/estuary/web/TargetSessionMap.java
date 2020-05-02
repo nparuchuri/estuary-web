@@ -1,18 +1,24 @@
 package com.nparuchuri.estuary.web;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TargetSessionMap {
 	
+	private static Logger logger = LogManager.getLogger(TargetSessionMap.class);
+	
 	private static TargetSessionMap instance;
 	
-	private Hashtable<String, List<String>> map;
+	private Map<String, List<String>> map;
 	
 	private TargetSessionMap () {
 		
-		this.map = new Hashtable<String, List<String>>();
+		this.map = new HashMap<String, List<String>>();
 	}
 	
 	public static TargetSessionMap get() {
@@ -38,34 +44,38 @@ public class TargetSessionMap {
 			this.map.put(target, sessionList);
 		}
 		else {
-			sessionList.add(id);
+			// check if target and session id already mapped. otherwise it creates duplicate list and sends duplicate messages. 
+			boolean contains = sessionList.contains(id);
+			if ( contains ) {
+				logger.info("avoiding duplicate registration, target : " + target + " session id " + id);
+			}
+			else {
+				sessionList.add(id);
+			}
+			
 		}
 		return sessionList;
 	}
 	
 	/**
-	 * 
+	 * Removes  all sub targets 
 	 * @param target
 	 * @param id
 	 * @return
 	 */
-	public synchronized boolean remove(String target, String id) {
-		
-		if ( target == null ) return false;
-		
-		boolean removed = false;
-		List<String> sessionList = this.map.get(target);
-		
-		if ( sessionList != null ) {
+	public synchronized void remove(String target, String id) {
+		if ( target == null ) return; 
+		List<String> targetList = TargetStringUtil.getTargetList(target);
+		targetList.forEach((t)-> {
+			List<String> sessionList = this.map.get(target);
+			if ( sessionList != null ) {
+				sessionList.remove(id);
+				if ( sessionList.size() == 0 ) {
+					this.map.remove(target);
+				}
+			}
 			
-			if ( sessionList.remove(id) ) {
-				removed = true;
-			}
-			if ( sessionList.size() == 0 ) {
-				this.map.remove(target);
-			}
-		}
-		return removed;
+		} );
 	}
 
 	/**
@@ -77,4 +87,11 @@ public class TargetSessionMap {
 		return this.map.get(target);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public Map<String, List<String>> targetSessionMap() {
+		return this.map;
+	}
 }

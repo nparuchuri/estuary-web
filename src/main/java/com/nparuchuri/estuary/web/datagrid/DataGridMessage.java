@@ -5,26 +5,31 @@ import java.util.UUID;
 import com.nparuchuri.estuary.web.msg.WebMessage;
 import com.nparuchuri.estuary.web.server.ServerInstanceInfo;
 
+/**
+ * 
+ * @author Narendra
+ *
+ */
 public class DataGridMessage {
 	
 	private ServerInstanceInfo serverInstanceInfo;
 	
-	private WebMessage webPushmessage;
+	private WebMessage webMsg;
 	
 	private UUID dataGridNodeId;
 
 	public DataGridMessage(ServerInstanceInfo serverInstanceInfo, WebMessage webPushmessage) {
 		super();
 		this.serverInstanceInfo = serverInstanceInfo;
-		this.webPushmessage = webPushmessage;
+		this.webMsg = webPushmessage;
 	}
 
 	public ServerInstanceInfo getServerInstanceInfo() {
 		return serverInstanceInfo;
 	}
 
-	public WebMessage getWebPushmessage() {
-		return webPushmessage;
+	public WebMessage getWebMsg() {
+		return webMsg;
 	}
 
 	public UUID getDataGridNodeId() {

@@ -43,7 +43,7 @@ public class WebPushServerImpl {
 	public void onOpen(Session session) {
 		logger.info("Connected ... " + session.getId());
 		ClientSessionHandler.setServerInfo(session);
-		ClientSessionHandler.createwebClient(session);
+		ClientSessionHandler.createWebClient(session);
 	}
 
 	/**
@@ -54,18 +54,20 @@ public class WebPushServerImpl {
 	@OnMessage
 	public void onMessage(String message, Session session) {
 		logger.info("message received on session " + session.getId() + " raw message : " + message);
-		WebMessage wpMessage = this.gson.fromJson(message, WebMessage.class);
+		WebMessage webMsg = this.gson.fromJson(message, WebMessage.class);
 		WebClient webClient = WebClientMap.get().getClient(session.getId());
-		if ( wpMessage.getType() == null ) {
+		if ( webMsg.getType() == null ) {
 			MessageSender.send(webClient, WebMessage.TYPE.ERROR, "Message type is required" );
 		}
-		else if ( wpMessage.getType() == WebMessage.TYPE.REG ) {
+		else if ( webMsg.getType() == WebMessage.TYPE.REG ) {
 			
-			RegistationMsgHandler.handle(webClient, wpMessage);
+			RegistationMsgHandler.handle(webClient, webMsg);
 			
-		} else if ( wpMessage.getType() == WebMessage.TYPE.PAL ) {
-			
-			PayLoadMsgHandler.handle(webClient, wpMessage);
+		} else if ( webMsg.getType() == WebMessage.TYPE.PAL ) {
+			if ( webMsg.getClientUniqueId() == null ||  webMsg.getClientUniqueId().equals("")) {
+				webMsg.setClientUniqueId(webClient.getClientUniqueId());
+			}
+			PayLoadMsgHandler.handle(webClient, webMsg);
 		}
 	}
 

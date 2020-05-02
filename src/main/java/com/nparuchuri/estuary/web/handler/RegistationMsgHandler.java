@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.nparuchuri.estuary.web.MessageSender;
 import com.nparuchuri.estuary.web.TargetSessionMap;
 import com.nparuchuri.estuary.web.WebClient;
+import com.nparuchuri.estuary.web.WebClientMap;
 import com.nparuchuri.estuary.web.msg.WebMessage;
 
 /**
@@ -43,6 +44,8 @@ public class RegistationMsgHandler {
 			TargetSessionMap.get().addOrUpdate(message.getTarget(), webClient.getSession().getId());
 			logger.info("Target registered " +  webClient );
 		}
+		logger.debug("final Web Client Map {} ", WebClientMap.get().getWebclients());
+		logger.debug("final Target Session Map {} " , TargetSessionMap.get().targetSessionMap());
 	}
 
 }
