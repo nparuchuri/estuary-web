@@ -9,21 +9,20 @@
 	<form action="">
 		<br> <br>
 		<table>
-			<tr>
+			<tr height ="50px">
 				<td>Target Channel :</td>
-				<td><input id="target" type="text" value="" />
+				<td><input id="target" type="text" value="/channel/usa/texas" /> &nbsp;&nbsp;&nbsp;
 					<input onClick="subscribe()" value="Subscribe" type="button" /></td>
-			<tr>
+			</tr>
+			<tr height ="50px">
 				<td>Data :</td>
-				<td><input id="data" type="text"></td>
+				<td><input id="data" type="text">&nbsp;&nbsp;&nbsp; <input onClick="wsSendMessage()" value="Send" type="button" /></td>
 			</tr>
-			<tr>
+			<tr height ="50px" >
 				<td></td>
-				<td><input onClick="wsSendMessage()" value="Send" type="button" />
-					<input onClick="wsCloseConnection()" value="Disconnect"
-					type="button" /></td>
+				<td><input onClick="wsCloseConnection()" value="Disconnect"	type="button" /></td>
 			</tr>
-			<tr>
+			<tr height ="50px">
 				<td>Conversation :</td>
 				<td><textarea id="echoText" rows="20" cols="128"></textarea></td>
 			</tr>
@@ -33,7 +32,7 @@
 	<script type="text/javascript">
 		var webSocket = new WebSocket("ws://" + window.location.hostname + ":"
 				+ window.location.port
-				+ "/estuary-web/webpuhserver?id1=123&id2=abc");
+				+ "/estuary-web/wsendpoint?id1=123&id2=abc");
 		var echoText = document.getElementById("echoText");
 		var data = document.getElementById("data");
 		var target = document.getElementById("target");

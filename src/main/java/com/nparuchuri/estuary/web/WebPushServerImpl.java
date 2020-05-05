@@ -20,7 +20,7 @@ import com.nparuchuri.estuary.web.msg.WebMessage;
  * @author Narendra
  *
  */
-@ServerEndpoint("/webpuhserver")
+@ServerEndpoint("/wsendpoint")
 public class WebPushServerImpl {
 	
 	private static Logger logger = LogManager.getLogger(WebPushServerImpl.class);

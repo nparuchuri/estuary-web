@@ -14,6 +14,6 @@ public interface DataGridService {
 		
 	public void destory();
 	
-	public void put(WebMessage message);
+	public void put(WebMessage message) throws DataGridPutException;
 	
 }
