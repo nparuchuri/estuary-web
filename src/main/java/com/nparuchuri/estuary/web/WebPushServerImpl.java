@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.nparuchuri.estuary.web.handler.PayLoadMsgHandler;
 import com.nparuchuri.estuary.web.handler.RegistationMsgHandler;
+import com.nparuchuri.estuary.web.msg.BaseMessage;
 import com.nparuchuri.estuary.web.msg.WebMessage;
 
 /**
@@ -57,15 +58,15 @@ public class WebPushServerImpl {
 		WebMessage webMsg = this.gson.fromJson(message, WebMessage.class);
 		WebClient webClient = WebClientMap.get().getClient(session.getId());
 		if ( webMsg.getType() == null ) {
-			MessageSender.send(webClient, WebMessage.TYPE.ERROR, "Message type is required" );
+			MessageSender.send(webClient, BaseMessage.TYPE.ERROR, "Message type is required" );
 		}
-		else if ( webMsg.getType() == WebMessage.TYPE.REG ) {
+		else if ( webMsg.getType() == BaseMessage.TYPE.REG ) {
 			
 			RegistationMsgHandler.handle(webClient, webMsg);
 			
-		} else if ( webMsg.getType() == WebMessage.TYPE.PAL ) {
-			if ( webMsg.getClientUniqueId() == null ||  webMsg.getClientUniqueId().equals("")) {
-				webMsg.setClientUniqueId(webClient.getClientUniqueId());
+		} else if ( webMsg.getType() == BaseMessage.TYPE.PAL ) {
+			if ( webMsg.getSenderId() == null ||  webMsg.getSenderId().equals("")) {
+				webMsg.setSenderId(webClient.getClientUniqueId());
 			}
 			PayLoadMsgHandler.handle(webClient, webMsg);
 		}

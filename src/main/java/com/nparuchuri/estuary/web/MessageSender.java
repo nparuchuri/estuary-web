@@ -35,7 +35,7 @@ public class MessageSender {
 	public static void send(WebClient webClient, WebMessage.TYPE type, String data) {
 		WebMessage webMsg = new WebMessage();
 		webMsg.setType(type);
-		webMsg.setClientUniqueId(webClient.getClientUniqueId());
+		webMsg.setSenderId(webClient.getClientUniqueId());
 		webMsg.setTarget(webClient.getTarget());
 		webMsg.setData(data);
 		String txtMsg = gson.toJson(webMsg);

@@ -38,7 +38,7 @@ public abstract class DataGridListener {
 	 */
 	protected void distributeMessage(WebMessage message) {
 		
-		String senderId = message.getClientUniqueId();
+		String senderId = message.getSenderId();
 
 		logger.info("Distributing message : " + message);
 		List<String> targetList = TargetStringUtil.getTargetList(message.getTarget());

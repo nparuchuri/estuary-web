@@ -5,17 +5,13 @@ package com.nparuchuri.estuary.web.msg;
  * @author Narendra
  *
  */
-public class WebMessage {
+public class WebMessage extends BaseMessage {
 	
-	public static enum TYPE  { ERROR, PAL, PAL_ERROR, REG , REG_ERROR, SACK };
+	
 	
 	private WebMessage.TYPE type;
 	
-	private String clientUniqueId;
-	
 	private String target;
-	
-	private String data;
 	
 	public WebMessage.TYPE getType() {
 		return type;
@@ -33,25 +29,9 @@ public class WebMessage {
 		this.target = target;
 	}
 
-	public String getData() {
-		return data;
-	}
-
-	public void setData(String data) {
-		this.data = data;
-	}
-
-	public String getClientUniqueId() {
-		return clientUniqueId;
-	}
-
-	public void setClientUniqueId(String sessionId) {
-		this.clientUniqueId = sessionId;
-	}
-
 	@Override
 	public String toString() {
-		return "WebMessage [type=" + type + ", clientUniqueId=" + clientUniqueId + ", target=" + target + ", data="
+		return "WebMessage [type=" + type + ", senderId=" + senderId + ", target=" + target + ", data="
 				+ data + "]";
 	}
 	

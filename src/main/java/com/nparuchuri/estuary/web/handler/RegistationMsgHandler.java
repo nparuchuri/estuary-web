@@ -8,6 +8,7 @@ import com.nparuchuri.estuary.web.MessageSender;
 import com.nparuchuri.estuary.web.TargetSessionMap;
 import com.nparuchuri.estuary.web.WebClient;
 import com.nparuchuri.estuary.web.WebClientMap;
+import com.nparuchuri.estuary.web.msg.BaseMessage;
 import com.nparuchuri.estuary.web.msg.WebMessage;
 
 /**
@@ -37,7 +38,7 @@ public class RegistationMsgHandler {
 		String target = message.getTarget();
 		
 		if ( target == null || target.trim().equals("")) {
-			MessageSender.send(webClient, WebMessage.TYPE.REG_ERROR, "Invalid Target, target is required");
+			MessageSender.send(webClient, BaseMessage.TYPE.REG_ERROR, "Invalid Target, target is required");
 		}
 		else {
 			webClient.setTarget(message.getTarget());

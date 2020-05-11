@@ -34,7 +34,6 @@ public class ServerInfoAppContextListener implements ServletContextListener {
 		
 		ServerInstanceInfo.get().setServerName(sce.getServletContext().getVirtualServerName());
 		logger.info("Server Instance Info " + ServerInstanceInfo.get());
-
 	}
 
 	@Override

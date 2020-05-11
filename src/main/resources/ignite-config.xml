@@ -1,0 +1,12 @@
+<bean class="org.apache.ignite.configuration.IgniteConfiguration">
+  ...
+  <property name="discoverySpi">
+    <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+      <property name="ipFinder">
+        <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder">
+          <property name="multicastGroup" value="239.255.255.255"/>
+        </bean>
+      </property>
+    </bean>
+  </property>
+</bean>
