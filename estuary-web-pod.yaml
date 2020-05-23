@@ -1,0 +1,12 @@
+apiVersion: v1 
+kind: Pod 
+metadata: 
+  name: estuary-web-pod 
+  labels:
+    component: estuary-web
+spec: 
+  containers: 
+    - name: estuary-web 
+      image: paruchurink/estuary-web:1.0
+      ports: 
+        - containerPort : 8080

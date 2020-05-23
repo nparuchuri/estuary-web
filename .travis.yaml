@@ -10,3 +10,15 @@ before_install:
   - gcloud config set project eco-tract-275820
   - gcloud config set compute/zone us-central1-c
   - gcloud container clusters get-credentials cluster-np
+  - echo "$DOCKER_PASSOWRD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t paruchurink/estuary-web -f Dockerfile
+
+script:
+  - docker run paruchurink/estuary-web npm test -- --coverage
+  
+
+deploy:
+  provider: script 
+  script: bash ./deploy.sh
+  on:
+    branch: master  

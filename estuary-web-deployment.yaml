@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: estuary-web-cluster
+   namespace: estuary
+spec:
+   replicas: 2
+   selector:
+      matchLabels:
+         app: estuary-web
+   template:
+      metadata:
+         labels:
+            app: estuary-web
+      spec:
+         serviceAccountName: estuary-sa
+         containers:
+            - name: estuary-web
+              image: paruchurink/estuary-web:latest
+              ports:
+                 - containerPort: 8080
+                 - containerPort: 47100 # communication SPI 
+                 - containerPort: 11211 # Rest
+                 - containerPort: 47500 # Discovery SPI 
+                 - containerPort: 49112 # JMX Port
+                 - containerPort: 8095 #SQL Port

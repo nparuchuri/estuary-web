@@ -11,6 +11,7 @@ import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.events.EventType;
 import org.apache.ignite.logger.log4j2.Log4J2Logger;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
+import org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.nparuchuri.estuary.web.datagrid.DataGridMessage;
 import com.nparuchuri.estuary.web.datagrid.DataGridService;
 import com.nparuchuri.estuary.web.msg.WebMessage;
+import com.nparuchuri.estuary.web.resource.WebResourceConfig;
 import com.nparuchuri.estuary.web.server.ServerInstanceInfo;
 
 /**
@@ -60,22 +62,16 @@ public class IgniteDataGridService implements DataGridService {
 
 	@Override
 	public void init() {
-
-		TcpDiscoverySpi spi = new TcpDiscoverySpi();
-		TcpDiscoveryMulticastIpFinder ipFinder = new TcpDiscoveryMulticastIpFinder();
-		ipFinder.setMulticastGroup("239.255.255.255");
-		spi.setIpFinder(ipFinder);
+		
+		IgniteConfiguration icfg = new IgniteConfiguration();
+		setDiscoverySPI(icfg);
 
 		CacheConfiguration<String, String> ccfg = new CacheConfiguration<String, String>("MESSAGES");
 		ccfg.setCacheMode(CacheMode.REPLICATED);
 
-		IgniteConfiguration icfg = new IgniteConfiguration();
 		icfg.setIncludeEventTypes(EventType.EVT_CACHE_OBJECT_PUT);
 		icfg.setCacheConfiguration(ccfg);
 		icfg.setMetricsLogFrequency(5 * 60 * 1000);
-
-		// Override default discovery SPI.
-		icfg.setDiscoverySpi(spi);
 
 		IgniteLogger log = null;
 		try {
@@ -98,6 +94,25 @@ public class IgniteDataGridService implements DataGridService {
 		this.igniteMessaging.localListen("EASYPUSH", new IgniteMessageListener(this.ignite.cluster().localNode().id()));
 	}
 
+	private void setDiscoverySPI(IgniteConfiguration icfg) {
+		if ( isMultiCastKookup() ) {
+			TcpDiscoverySpi spi = new TcpDiscoverySpi();
+			TcpDiscoveryMulticastIpFinder ipFinder = new TcpDiscoveryMulticastIpFinder();
+			ipFinder.setMulticastGroup("239.255.255.255");
+			spi.setIpFinder(ipFinder);
+			// Override default discovery SPI.
+			icfg.setDiscoverySpi(spi);
+		}
+		else if ( isK8Kookup() ) {
+			TcpDiscoverySpi spi = new TcpDiscoverySpi();
+			TcpDiscoveryKubernetesIpFinder ipFinder = new TcpDiscoveryKubernetesIpFinder();
+			ipFinder.setNamespace("estuary");
+			ipFinder.setServiceName("estuary-discovery-service");
+			spi.setIpFinder(ipFinder);
+			icfg.setDiscoverySpi(spi);
+		}
+	}
+
 	@Override
 	public void destory() {
 		Ignition.stop(false);
@@ -111,6 +126,30 @@ public class IgniteDataGridService implements DataGridService {
 		String message = this.gson.toJson(dgMessage);
 		logger.info("Inserting message into data grid " + message);
 		this.igniteMessaging.send("EASYPUSH", message);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isK8Kookup() {
+		String value = WebResourceConfig.get().getProperty("datagrid.ignite.iplookup");
+		if ( value != null && value.equalsIgnoreCase("K8")) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isMultiCastKookup() {
+		String value = WebResourceConfig.get().getProperty("datagrid.ignite.iplookup");
+		if ( value != null && value.equalsIgnoreCase("MC")) {
+			return true;
+		}
+		return false;
 	}
 
 }
